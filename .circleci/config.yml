@@ -10,8 +10,12 @@ jobs:
     steps:
       - checkout
       - run: |
+          printenv FOO
+      - run: |
           if [ "${FOO}" = "bar" ]; then
+            echo "halting..."
             circleci-agent step halt
+            echo "halted!"
           fi
           
           echo "still running?"
