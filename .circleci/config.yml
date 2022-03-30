@@ -13,6 +13,8 @@ jobs:
           if [ "${FOO}" = "bar" ]; then
             circleci-agent step halt
           fi
+          
+          echo "still running?"
       - run: |
           echo "continued"
 
