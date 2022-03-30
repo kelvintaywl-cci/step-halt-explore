@@ -6,7 +6,7 @@ jobs:
       FOO: bar
     resource_class: small
     docker:
-      - image: 729154041854.dkr.ecr.us-west-1.amazonaws.com/cicd
+      - image: cimg/base:stable
     steps:
       - checkout
       - run: |
