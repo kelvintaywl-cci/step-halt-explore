@@ -1,0 +1,32 @@
+version: 2.1
+
+jobs:
+  build:
+    environment:
+      FOO: bar
+    resource_class: small
+    docker:
+      - image: 729154041854.dkr.ecr.us-west-1.amazonaws.com/cicd
+    steps:
+      - checkout
+      - run: |
+          if [ "${FOO}" = "bar" ]; then
+            circleci-agent step halt
+          fi
+      - run: |
+          echo "continued"
+
+  noop:
+    resource_class: small
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run: echo "noop"
+      
+workflows:
+  main:
+    jobs:
+      - build
+      - noop:
+          requires:
+            - build
