@@ -22,17 +22,17 @@ jobs:
       - run: |
           echo "continued"
 
-  noop:
+  will_fail:
     resource_class: small
     docker:
       - image: cimg/base:stable
     steps:
-      - run: echo "noop"
+      - run: echo "failing..." && exit 1
       
 workflows:
   main:
     jobs:
       - build
-      - noop:
+      - will_fail:
           requires:
             - build
