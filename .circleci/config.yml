@@ -1,37 +1,31 @@
 version: 2.1
 
 jobs:
-  build:
-    environment:
-      FOO: bar
-    resource_class: small
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - run: |
-          printenv FOO
-      - run: |
-          if [ "${FOO}" = "bar" ]; then
-            echo "halting..."
-            circleci-agent step halt
-            echo "halted!"
-          fi
-          
-          echo "still running?"
-      - run: |
-          echo "continued"
-
   will_fail:
     resource_class: small
     docker:
       - image: cimg/base:stable
+    parallelism: 3
     steps:
-      - run: echo "failing..." && exit 1
-      
+      - run:
+          name: mock test
+          command: |
+            if [ $CIRCLE_NODE_INDEX -eq 0]; theb 
+              sleep 5
+              echo "failing..."
+              exit 1
+            else
+              sleep 60
+            fi
+      - run:
+          # see https://circleci.com/docs/configuration-reference/#ending-a-job-from-within-a-step
+          name: halt job on failure
+          when: on_fail
+          command: |
+            echo "stopping this job!"
+            circleci-agent step halt
+
 workflows:
   main:
     jobs:
-      - build
-      - will_fail:
-          requires:
-            - build
+      - will_fail
