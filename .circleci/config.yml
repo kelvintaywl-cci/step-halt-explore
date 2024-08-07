@@ -10,7 +10,7 @@ jobs:
       - run:
           name: mock test
           command: |
-            if [ $CIRCLE_NODE_INDEX -eq 0]; theb 
+            if [ $CIRCLE_NODE_INDEX -eq 0]; then 
               sleep 5
               echo "failing..."
               exit 1
